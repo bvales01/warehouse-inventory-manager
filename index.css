@@ -1,0 +1,20 @@
+nav {
+    background: #3e1f78;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Franklin Gothic Medium';
+    background: #f4f4f4;
+    color: #333;
+}
