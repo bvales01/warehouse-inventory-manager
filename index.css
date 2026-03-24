@@ -8,6 +8,12 @@ nav a {
     color: #fff;
     text-decoration: none;
     margin: 0 15px;
+    font-size: 18px;
+}
+
+nav a.active {
+    font-weight: bold;
+    border-bottom: 2px solid #fff;
 }
 
 body {
