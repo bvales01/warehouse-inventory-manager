@@ -21,57 +21,16 @@ async function lookupItem() {
         alert('Error occurred while fetching item data.');
     }
 };
-//Add event listener to the lookup button
+
 if (lookupBtn) {
     lookupBtn.addEventListener('click', lookupItem);
 };
 
 
 
-//Add Stock Function 
-function addStock() {
-    const itemName = document.getElementById('itemInput').value;
-    const itemLocation = document.getElementById('itemLocation').value;
-    const itemQty = parseInt(document.getElementById('itemQty').value);
 
-    if (!itemName || !itemLocation || isNaN(itemQty) || itemQty <= 0) {
-        alert('Please fill in all fields with valid data.');
-        return;
-    }
 
-    const newItem = {
-        name: itemName,
-        location: itemLocation,
-        qty: itemQty
-    };
-    //Get existing inventory from localStorage
-    const existingInventory = JSON.parse(localStorage.getItem('myInventory')) || [];
-    //Add new item to inventory
-    existingInventory.push(newItem);    
-    //Save updated inventory back to localStorage
-    localStorage.setItem('myInventory', JSON.stringify(existingInventory));
-    //Clear input fields after adding stock
-    document.getElementById('itemInput').value = '';
-    document.getElementById('itemLocation').value = '';
-    document.getElementById('itemQty').value = '';
-    alert('Stock added successfully!');
-};
-//Add event listener to the add stock button
-if (addBtn) {
-    addBtn.addEventListener('click', addStock);
-}
 
-document.addEventListener('DOMContentLoaded', displayInventory);    
-    const listContainer = document.getElementById('inventoryList');
-    if (listContainer) {
-        displayInventory();
-    }
-    inventory.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `${item.name} - ${item.location} - Qty: ${item.qty}`;
-        listContainer.appendChild(li);
-    }); 
-    
 
 
 
