@@ -10,13 +10,30 @@
 <body>
     <nav>
         <a href="index.html">Dashboard</a>
-        <a href="inventory.html">Inventory</a>
+        <a href="inventory.html" class="active">Inventory</a>
     </nav>
 
     <main class="container">
         <section id="inventory" class="active-inventory">
-            <h1>Inventory</h1>
+            <header class="header">Inventory</header>
         </section>
 
-    
+        <table id="inventoryTable">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Location</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody id="inventoryBody">
+                <!-- Inventory items will be populated here -->
+            </tbody>
+        </table>
+
+        <a href="index.html" class="back-link">Back to Dashboard</a>
+
     </main>
+
+    <script src="app.js"></script>
+</body>

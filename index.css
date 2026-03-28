@@ -24,3 +24,25 @@ body {
     background: #f4f4f4;
     color: #333;
 }
+
+header {
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: #8f8f8f;
+    color: white;
+}
+
+alert-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}

@@ -14,21 +14,38 @@
     </nav>
 
     <main class="container">
-        <h1>Dashboard</h1>
+        <header class="header">Dashboard</header>
 
         <section id="alerts" class="alert-card">
             <h2>Low Stock Alerts</h2>
         </section>
 
-        <input type="text" id="itemInput" placeholder="Item Name">
-        <input type="text" id="localInput" placeholder="Location (e.g. SHELF, STAGING, etc.)">
-        <input type="number" id="qtyInput" placeholder="Qty">
-        <button id="addBtn">Update stock</button>
-
-        <section id="inventory" class="active-inventory">
-            <h2>Current Inventory</h2>
-            <button id="viewBtn">View Inventory</button>
+        <section id="add-stock" class="add-stock-card">
+        <h2>Item Lookup</h2>
+            <input type="text" id="barcodeInput" placeholder="Enter barcode (e.g. 041500052316)">
+            <button id="lookupBtn">Lookup</button>
+        <h2>Add Stock</h2>
+            <input type="text" id="itemInput" placeholder="Item Name">
+            <select id="itemLocation">
+                <option value="">Select Location</option>
+                <option value="Aisle 1">Aisle 1</option>
+                <option value="Aisle 2">Aisle 2</option>
+                <option value="Aisle 3">Aisle 3</option>
+            </select>
+            <input type="number" id="itemQty" placeholder="Qty">
+            <button id="addBtn">Add stock</button>
         </section>
+
+        <ul id="inventoryList"></ul>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+
+
+        
         
         
             
