@@ -2,7 +2,7 @@
 // FIRST: pull existing data from LocalStorage (Data Initialization)
 let inventory = JSON.parse(localStorage.getItem('inventoryData')) || [];
 let historyLog = JSON.parse(localStorage.getItem('historyData')) || [];
-let locations = JSON.parse(localStorage.getItem('locationsData')) || [];
+let locations = JSON.parse(localStorage.getItem('locationsData')) || ['Aisle 1', 'Aisle 2', 'Aisle 3', 'Aisle 4'];
 let inventoryChartInstance = null;
 
 // helper function to save inventory data to LocalStorage
@@ -14,7 +14,7 @@ const saveData = () => {
 
 // find locations from inventory data and populate select dropdown
 const populateLocatations = () => {
-    const dropdowns = ['itemLocation', 'locationFilter', 'removeLocation'];
+    const dropdowns = ['itemLocation', 'locationFilter', 'deleteLocation'];
 
     dropdowns.forEach(id => {
         const selectElement = document.getElementById(id);
@@ -178,13 +178,37 @@ if (removeLocation) {
 const renderDashboard = () => {
     const lowStockList = document.getElementById('lowStockList');
     if (!lowStockList) return;
+    //items will be grouped by name for low stock alerts, showing total quantity across all locations
+    const totalInventoryByName = {};
+    inventory.forEach(item => {
+        if (totalInventoryByName[item.name]) {
+            totalInventoryByName[item.name].totalQty += item.qty;
+            if (!totalInventoryByName[item.name].locations.includes(item.location)) {
+                totalInventoryByName[item.name].locations.push(item.location);
+            }
+        } else {
+            totalInventoryByName[item.name] = {
+                totalQty: item.qty,
+                locations: [item.location]
+            };
+        }
+    });
 
-    const lowItems = (inventory || []).filter(item => item.qty < 10);
+    const lowItems = Object.keys(totalInventoryByName)
+        .filter(name => totalInventoryByName[name].totalQty < 10)
+        .map(name => {
+            return {
+                name: name,
+                totalQty: totalInventoryByName[name].totalQty,
+                locations: totalInventoryByName[name].locations
+            };
+        });
+        
     lowStockList.innerHTML = lowItems.length === 0
         ? '<li>No low stock items.</li>'
         : lowItems.map(item => {
-            const color = item.qty < 5 ? 'red' : 'orange';
-            return `<li style="color: ${color};">${item.name} at ${item.location} - Qty: ${item.qty}</li>`;
+            const color = item.totalQty < 5 ? 'red' : 'orange';
+            return `<li style="color: ${color};">${item.name} - Total Qty: ${item.totalQty} - Locations: ${item.locations.join(', ')}</li>`;
         }).join('');
 
     const ctx = document.getElementById('inventoryChart');

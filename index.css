@@ -1,17 +1,17 @@
-/* navBar layout
-navbar (row)
-*/
+/*navBar layouts*/
 .navBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     text-align: center;
     padding: 16px 24px;
+    border-radius: 8px;
     background: #3e1f78;
     color: white;
 }
 .navBar ul {
     display: flex;
+    flex-wrap: wrap;
     list-style: none;
     gap: 20px;
 }
@@ -30,24 +30,17 @@ nav a:focus {
     text-decoration: none;
 }
 
-/*(Dashboard: flex flow wrap, low stock card staged left, quick actions staged center to right, chart.js full width bottom)
-*/
-
-/*main layout*/
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+.container { /*main layout*/
+    max-width: 1200px;
     padding: 20px;
 }
 
-/* non updated code - NEEDS REVIEW */
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     font-family: 'Franklin Gothic Medium', sans-serif;
-    background: #f5f5f5;
+    background: #b8bec9;
     color: #333;
     line-height: 1.6;
 }
@@ -59,20 +52,19 @@ header {
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    background-color: #8f8f8f;
+    background-color: #5a5466;
     color: white;
 }
 
 
-/*card styles for low stock and quick actions*/
-.alert-card, .quick-actions {
-    display: flex;
-    flex-direction: column;
+/*cards and buttons*/
+.card, .alert-card, .quick-actions, .history-card, .action-card, .chart-section {
     background: white;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 20px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 .alert-card {
     flex: 1 1 300px;
@@ -81,32 +73,93 @@ header {
 .quick-actions {
     flex: 2 1 500px;
 }
-/* form styling for quick actions */
-.quick-actions input,
-.quick-actions select {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 
-}
-
-/* chart styles */
-.chart {
-    flex: 1 1 100%;
-}
-
-/*button styles*/
-.buttons {
+.buttons, .input-group{
     display: flex;
     gap: 10px;
+    margin-top: 10px;
 }
-.buttons button {
+button, .backBtn {
     flex: 1;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #3e1f78;
+    background-color: #5a5466;
     color: white;
     cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    display: inline-block;
+}
+button.btn-caution { /* For delete or critical actions */
+    background-color: #e74c3c;
+} 
+
+/*forms & tables*/
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: white;
+}
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+th {
+    background-color: #3e1f78;
+    color: white;
+}
+.table-container, .active-inventory {
+    overflow-x: auto;
+}
+
+/* media queries for responsive design */
+/* desktop layout */
+@media (min-width: 768px) {
+    .dashboardGrid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-areas: 
+        "alerts actions"
+        "chart chart";
+        gap: 20px;
+    }
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repreat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    #alerts {
+        grid-area: alerts;
+        margin-bottom: 0;
+    }
+    #quickActions {
+        grid-area: actions;
+        margin-bottom: 0;
+    }
+    .chart-section {
+        grid-area: chart;
+    }
+}
+/* mobile layout */
+@media (max-width: 767px) {
+    .navBar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .buttons, .input-group {
+        flex-direction: column; /* stack buttons vertically*/
+    }
 }
