@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actions</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <nav class="navBar">
+        <div class="logo">InventoryPro</div>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="inventory.html">Inventory</a></li>
+            <li><a href="history.html">History</a></li>
+            <li><a href="actions.html" class="active">Actions</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <header class="header">Warehouse Actions</header>
+
+        <div class="actions-grid">
+            <section class="action-card">
+                <h2>Lookup Item</h2>
+                <div class="input-group">
+                    <input type="text" id="barcodeInput" placeholder="Enter barcode (e.g. 041500052316)">
+                    <button id="lookupBtn">Lookup</button>
+                </div>
+            </section>
+
+            <section class="action-card">
+                <h2>Update Inventory</h2>
+                <div class="form-fields">
+                    <input type="text" id="itemName" placeholder="Item Name">
+                    <select id="itemLocation">
+                        <option value="">Select Location</option>
+                    </select>
+                    <input type="number" id="itemQty" placeholder="Qty">
+
+                    <div class="buttons">
+                        <button id="addBtn" class="btn-primary">Add</button>
+                        <button id="removeBtn" class="btn-caution">Remove</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card action-section">
+                <h2>Manage Warehouse Locations</h2>
+                <div class="form-fields">
+                    <label for="newLocation">New Location Name:</label>
+                    <input type="text" id="newLocation" placeholder="e.g. Aisle 5">
+                    <button id="addLocationBtn" class="btn-primary">Create Location</button>
+                </div>
+
+                <hr>
+
+                <div class="form-fields">
+                    <label for="deleteLocation">Delete Location:</label>
+                    <select id="deleteLocation">
+                        <option value="">Select Location</option>
+                    </select>
+                    <button id="deleteLocationBtn" class="btn-caution">Delete Location</button>
+                </div>
+            </section>
+
+            <div class="back-to-dashboard">
+                <a href="index.html" class="backBtn">Back to Dashboard</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

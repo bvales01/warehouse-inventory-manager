@@ -3,51 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Manager Dashboard</title>
+    <title>InventoryPro Dashboard</title>
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <nav>
-        <a href="index.html" class="active">Dashboard</a>
-        <a href="inventory.html">Inventory</a>
+    <nav class="navBar">
+        <div class="logo">InventoryPro</div>
+        <ul>
+            <li><a href="index.html" class="active">Dashboard</a></li>
+            <li><a href="inventory.html">Inventory</a></li>
+            <li><a href="history.html">History</a></li>
+            <li><a href="actions.html">Actions</a></li>
+        </ul>
     </nav>
 
     <main class="container">
         <header class="header">Dashboard</header>
 
-        <section id="alerts" class="alert-card">
-            <h2>Low Stock Alerts</h2>
+        <div class="dashboardGrid">
+            <section id="alerts" class="alert-card">
+                <h2>Low Stock Alerts</h2>
+                <div id="lowStockList">Empty</div>
+            </section>
+
+        <section id="quickActions" class="quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="input-group">
+                <input type="text" id="barcodeInput" placeholder="Enter barcode (e.g. 041500052316)">
+                <button id="lookupBtn">Lookup</button>
+            </div>
+
+            <div class="form-fields">
+                <input type="text" id="itemName" placeholder="Item Name">
+                <select id="itemLocation">
+                    <option value="">Select Location</option>
+                </select>
+                <input type="number" id="itemQty" placeholder="Qty">
+
+                <div class="buttons">
+                    <button id="addBtn" class="btn-primary">Add</button>
+                    <button id="removeBtn" class="btn-caution">Remove</button>
+                </div>
+            </div>
+
         </section>
 
-        <section id="inventory-report">
+        <section class="chart-section" id="inventory-report">
             <h2>Inventory Distribution</h2>
-            <canvas id="inventoryChart"></canvas>
+            <div class="chart-container">
+                <canvas id="inventoryChart"></canvas>
+            </div>
         </section>
-
-        <section id="add-stock" class="add-stock-card">
-        <h2>Item Lookup</h2>
-            <input type="text" id="barcodeInput" placeholder="Enter barcode (e.g. 041500052316)">
-            <button id="lookupBtn">Lookup</button>
-        <h2>Add Stock</h2>
-            <input type="text" id="itemName" placeholder="Item Name">
-            <select id="itemLocation">
-                <option value="">Select Location</option>
-                <option value="Aisle 1">Aisle 1</option>
-                <option value="Aisle 2">Aisle 2</option>
-                <option value="Aisle 3">Aisle 3</option>
-            </select>
-            <input type="number" id="itemQty" placeholder="Qty">
-            <button id="addBtn">Add stock</button>
-        </section>
-
-
+   
+        </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js"></script>
     
 </body>
+</html>
 
 
 

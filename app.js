@@ -1,18 +1,54 @@
-// JAVASCRIPT
+// JS for InventoryPro 
+// FIRST: pull existing data from LocalStorage (Data Initialization)
+let inventory = JSON.parse(localStorage.getItem('inventoryData')) || [];
+let historyLog = JSON.parse(localStorage.getItem('historyData')) || [];
+let locations = JSON.parse(localStorage.getItem('locationsData')) || [];
+let inventoryChartInstance = null;
 
-//Open Food Facts API Lookup Function
-async function lookupItem() {
-    const barcode = document.getElementById('barcodeInput').value;
-    //Tell where to go to get the data based on the barcode
-    const url = `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`;
+// helper function to save inventory data to LocalStorage
+const saveData = () => {
+    localStorage.setItem('inventoryData', JSON.stringify(inventory));
+    localStorage.setItem('historyData', JSON.stringify(historyLog));
+    localStorage.setItem('locationsData', JSON.stringify(locations));
+};
+
+// find locations from inventory data and populate select dropdown
+const populateLocatations = () => {
+    const dropdowns = ['itemLocation', 'locationFilter', 'removeLocation'];
+
+    dropdowns.forEach(id => {
+        const selectElement = document.getElementById(id);
+        if (selectElement) {
+            const defaultOption = selectElement.options[0]; // Keep the default option
+            selectElement.innerHTML = '';
+            if (defaultOption) selectElement.appendChild(defaultOption); 
+
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location;
+                selectElement.appendChild(option);
+            });
+        }
+    });
+};
+
+   
+//API lookup script for inventory page
+const lookupItem = async () => {
+    const barcodeInput = document.getElementById('barcodeInput');
+    const itemNameInput = document.getElementById('itemName');
+    if (!barcodeInput.value) {
+        alert('Please enter a barcode to look up.');
+        return;
+    }
+
     try {
-        //Fetch the data from the API
-        const response = await fetch(url);
+        const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcodeInput.value}.json`);
         const data = await response.json();
-        //Check if the product was found and update the item input field with the product name
-        if (data.status === 1) {
-            document.getElementById('itemInput').value = data.product.product_name || 'Unknown Item';
-            console.log('Item found:', data.product.product_name);
+
+        if (data.status === 1 && data.product.product_name) {
+            itemNameInput.value = data.product.product_name;
         } else {
             alert('Item not found. Please enter details manually.');
         }
@@ -21,66 +57,244 @@ async function lookupItem() {
         alert('Error occurred while fetching item data.');
     }
 };
+// attach API lookup function to button
+const lookupBtn = document.getElementById('lookupBtn');
+if (lookupBtn) lookupBtn.addEventListener('click', lookupItem);
 
-if (lookupBtn) {
-    lookupBtn.addEventListener('click', lookupItem);
+
+
+// inventory management (add and remove items)
+const updateInventory = (actionType) => {
+    const nameElement = document.getElementById('itemName');
+    const locationElement = document.getElementById('itemLocation');
+    const qtyElement = document.getElementById('itemQty');
+
+    if (!nameElement || !locationElement || !qtyElement) {
+        alert('Error: Missing input fields. Please enter item name, location, and quantity.');
+        return;
+    }
+
+    const name = nameElement.value.trim();
+    const location = locationElement.value.trim();
+    const qty = parseInt(qtyElement.value, 10);
+    const existingItemIndex = inventory.findIndex(item => item.name === name && item.location === location);
+
+    if (actionType === 'add') {
+        if (existingItemIndex > -1) {
+            inventory[existingItemIndex].qty += qty;
+        } else {
+            inventory.push({ name, location, qty });
+        }
+    } else if (actionType === 'remove') {
+        if (existingItemIndex > -1) {
+            if (inventory[existingItemIndex].qty < qty) {
+                alert(`Error: Cannot remove more items than available.`);
+                return;
+            }
+            inventory[existingItemIndex].qty -= qty;
+            if (inventory[existingItemIndex].qty === 0) {
+                inventory.splice(existingItemIndex, 1);
+            }
+        } else {
+            alert('Error: Item not found in inventory.');
+            return;
+        }
+    }
+
+    // log transaction to history
+    logHistory(actionType === 'add' ? 'added' : 'removed', name, location, qty);
+    
+    alert(`Successfully ${actionType === 'add' ? 'added' : 'removed'} ${qty} of ${name} at ${location}.`);
+
+    // successfully added or removed item, now clear input fields
+    nameElement.value = '';
+    locationElement.value = '';
+    qtyElement.value = '';
+    const barcodeInput = document.getElementById('barcodeInput');
+    if (barcodeInput) barcodeInput.value = '';
+
+    // render dashboard updates
+    saveData();
+    renderDashboard();
+    populateLocatations();
+};
+
+const addBtn = document.getElementById('addBtn');
+const removeBtn = document.getElementById('removeBtn');
+if (addBtn) addBtn.addEventListener('click', () => updateInventory('add'));
+if (removeBtn) removeBtn.addEventListener('click', () => updateInventory('remove'));
+
+
+// history logging function
+const logHistory = (action, name, location, qty) => {
+    const timestamp = new Date().toLocaleString();
+    historyLog.unshift({ action, name, location, qty, timestamp });
+    saveData();
+};
+
+// location management function
+const addLocation = document.getElementById('addLocationBtn');
+if (addLocation) {
+    addLocation.addEventListener('click', () => {
+        const newLocationInput = document.getElementById('newLocation');
+        const newLocation = newLocationInput.value.trim();
+
+        if (!newLocation) return alert('Please enter a location name.');
+        if (locations.includes(newLocation)) return alert('Location already exists.');
+
+        locations.push(newLocation);
+        logHistory('Created location', newLocation, '', '');
+        saveData();
+        populateLocatations();
+        newLocationInput.value = '';
+        alert(`Location "${newLocation}" added successfully.`);
+    });
+};
+
+const removeLocation = document.getElementById('deleteLocationBtn');
+if (removeLocation) {
+    removeLocation.addEventListener('click', () => {
+        const locationSelect = document.getElementById('deleteLocation');
+        const locationToRemove = locationSelect.value;
+
+        if (!locationToRemove) return alert('Please select a location to remove.');
+
+        const hasItems = inventory.some(item => item.location === locationToRemove);
+        if (hasItems) {
+            alert('Cannot remove location that contains inventory. Please move or remove items first.');
+            return;
+        }
+
+        locations = locations.filter(loc => loc !== locationToRemove);
+        logHistory('Removed location', locationToRemove, '', '');
+        saveData();
+        populateLocatations();
+        alert(`Location "${locationToRemove}" deleted successfully.`);
+    });
 };
 
 
-//Chart.js Inventory Distribution Chart
-const chartElement = document.getElementById('inventoryChart');
-if (chartElement) {
-const ctx = document.getElementById('inventoryChart').getContext('2d');
-const inventoryChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Aisle 1', 'Aisle 2', 'Aisle 3', 'Aisle 4'],
-        datasets: [{
-            label: 'Items per location',
-            data: [12, 19, 3, 5], // Example data - replace with dynamic inventory counts
-            backgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56',
-                '#4BC0C0'
-            ]
-        }]
-    },
-    options: {
-        responsive: false,
+// dashboard rendering  (alerts and charts)
+const renderDashboard = () => {
+    const lowStockList = document.getElementById('lowStockList');
+    if (!lowStockList) return;
+
+    const lowItems = (inventory || []).filter(item => item.qty < 10);
+    lowStockList.innerHTML = lowItems.length === 0
+        ? '<li>No low stock items.</li>'
+        : lowItems.map(item => {
+            const color = item.qty < 5 ? 'red' : 'orange';
+            return `<li style="color: ${color};">${item.name} at ${item.location} - Qty: ${item.qty}</li>`;
+        }).join('');
+
+    const ctx = document.getElementById('inventoryChart');
+    if (!ctx) return;
+        const locationCounts = {};
+        locations.forEach(loc => locationCounts[loc] = 0);
+        inventory.forEach(item => {
+            if (locationCounts[item.location] !== undefined) locationCounts[item.location] += item.qty;
+        });
+
+        if (inventoryChartInstance) inventoryChartInstance.destroy();
+
+        inventoryChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(locationCounts),
+                datasets: [{
+                    label: 'Items per location',
+                    data: Object.values(locationCounts),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#C9CBCF', '#FF6384', '#36A2EB', '#FFCE56']
+                }]
+            },
+            options: { responsive: false }
+        });
+};
+
+
+
+// history page rendering
+const renderHistory = () => {
+    const historyTable = document.getElementById('historyList');
+    if (!historyTable) return;
+
+    if (historyLog.length === 0) {
+        historyTable.innerHTML = '<tr><td colspan="4">No history available.</td></tr>';
+        return;
     }
-});
-}
 
-//Add item to inventory and save to localStorage
-let inventory = JSON.parse(localStorage.getItem('myInventory')) || [];
-const addBtn = document.getElementById('addBtn');
-addBtn.addEventListener('click', () => {
-    const itemName = document.getElementById('itemName').value;
-    const itemLocation = document.getElementById('itemLocation').value;
-    const itemQty = parseInt(document.getElementById('itemQty').value);
-    if (itemName && itemQty) {
-        const newItem = { name: itemName, location: itemLocation, qty: itemQty };
-    };
+    historyTable.innerHTML = historyLog.map(entry => `
+        <tr>
+            <td>${entry.timestamp}</td>
+            <td>${entry.action}</td>
+            <td>${entry.name || ''}</td>
+            <td>${entry.location || ''}</td>
+            <td>${entry.qty || ''}</td>
+        </tr>
+    `).join('');
+};
 
-    //Push to array and save to localStorage
-    inventory.push(newItem);
-    localStorage.setItem('myInventory', JSON.stringify(inventory));
-});
 
-//Display script for inventory page
-function displayInventory() {
+// inventory page filters and rendering
+const renderInventory = () => {
     const displayList = document.getElementById('inventoryList');
-    const savedInventory = JSON.parse(localStorage.getItem('myInventory')) || [];
-    displayList.innerHTML = ''; // Clear existing list
-    savedInventory.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `${item.name} - ${item.location} - Qty: ${item.qty}`;
-        displayList.appendChild(li);
+    if (!displayList) return;
+
+    const searchInput = document.getElementById('searchInput');
+    const locationFilter = document.getElementById('locationFilter');
+    const sortFilter = document.getElementById('sortFilter');
+
+    let filteredInventory = [...inventory];
+
+    if (searchInput && searchInput.value) {
+        const term = searchInput.value.toLowerCase();
+        filteredInventory = filteredInventory.filter(item => item.name.toLowerCase().includes(term));
+    }
+
+    if (locationFilter && locationFilter.value) {
+        filteredInventory = filteredInventory.filter(item => item.location === locationFilter.value);
+    }
+
+    if (sortFilter && sortFilter.value) {
+        const sortType = sortFilter.value;
+        if (sortType === 'nameAsc') filteredInventory.sort((a, b) => a.name.localeCompare(b.name));
+        if (sortType === 'nameDesc') filteredInventory.sort((a, b) => b.name.localeCompare(a.name));
+        if (sortType === 'qtyAsc') filteredInventory.sort((a, b) => a.qty - b.qty);
+        if (sortType === 'qtyDesc') filteredInventory.sort((a, b) => b.qty - a.qty);
+    }
+
+    //render to table
+    if (filteredInventory.length === 0) {
+        displayList.innerHTML = '<tr><td colspan="3">No items match the current filters.</td></tr>';
+        return;
+    }
+
+    displayList.innerHTML = filteredInventory.map(item => `
+        <tr>
+            <td>${item.name}</td>
+            <td>${item.location}</td>
+            <td>${item.qty}</td>
+        </tr>
+    `).join('');
+};
+
+//listener for filter changes
+const attachFilterListeners = () => {
+    ['searchInput', 'locationFilter', 'sortFilter'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.addEventListener('input', renderInventory);
     });
-}  
-displayInventory(); // Call the function to display inventory on page load
+};
 
 
 
+// global page itialization
+document.addEventListener('DOMContentLoaded', () => {
+    populateLocatations();
+    renderDashboard();
+    renderHistory();
+    renderInventory();
+    attachFilterListeners();
+});
+    
 

@@ -1,0 +1,26 @@
+{
+  "name": "warehouse-inventory-manager",
+  "version": "1.0.0",
+  "description": "Responsive Web Application for Warehouse Inventory Management",
+  "main": "app.js",
+  "scripts": {
+    "dev": "live-server --port=8080 --open=index.html",
+    "start": "node app.js",
+    "test": "mocha --timeout 5000",
+    "test:watch": "mocha --watch",
+    "lint": "eslint .",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bvales01/warehouse-inventory-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bvales01/warehouse-inventory-manager/issues"
+  },
+  "homepage": "https://github.com/bvales01/warehouse-inventory-manager#readme"
+}

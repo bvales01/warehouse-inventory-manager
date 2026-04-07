@@ -8,40 +8,63 @@
 </head>
 
 <body>
-    <nav>
-        <a href="index.html">Dashboard</a>
-        <a href="inventory.html" class="active">Inventory</a>
+    <nav class="navBar">
+        <div class="logo">InventoryPro</div>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="inventory.html" class="active">Inventory</a></li>
+            <li><a href="history.html">History</a></li>
+            <li><a href="actions.html">Actions</a></li>
+        </ul>
     </nav>
 
-    <main class="container">
-        <section id="inventory" class="active-inventory">
-            <header class="header">Inventory</header>
+    <main class="inventory container">
+        <header class="header">Inventory</header>
+
+        <section class="filters card">
+            <div class="filter-group">
+                <input type="text" id="searchInput" placeholder="Search by item name">
+
+                <select id="locationFilter">
+                    <option value="">All Locations</option>
+                </select>
+
+                <select id="sortFilter">
+                    <option value="">Sort By</option>
+                    <option value="nameAsc">Name (A-Z)</option>
+                    <option value="nameDesc">Name (Z-A)</option>
+                    <option value="qtyAsc">Quantity (Low to High)</option>
+                    <option value="qtyDesc">Quantity (High to Low)</option>
+                </select>
+            </div>
         </section>
 
+        <section id="inventory" class="active-invetory card">
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Location</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryList">
+                    <tr>
+                        <td colspan="3">No items in inventory.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-        <a href="index.html" class="back-link">Back to Dashboard</a>
+        <div class="back-to-dashboard">
+            <a href="index.html" class="backBtn">Back to Dashboard</a>
+        </div>
+    </main>
+        
 
     </main>
 
-    <section id="add-stock" class="add-stock-card">
-        <h2>Item Lookup</h2>
-            <input type="text" id="barcodeInput" placeholder="Enter barcode (e.g. 041500052316)">
-            <button id="lookupBtn">Lookup</button>
-        <h2>Add Stock</h2>
-            <input type="text" id="itemName" placeholder="Item Name">
-            <select id="itemLocation">
-                <option value="">Select Location</option>
-                <option value="Aisle 1">Aisle 1</option>
-                <option value="Aisle 2">Aisle 2</option>
-                <option value="Aisle 3">Aisle 3</option>
-            </select>
-            <input type="number" id="itemQty" placeholder="Qty">
-            <button id="addBtn">Add stock</button>
-        </section>
-
-        <ul id="inventoryList"></ul>
-        
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js"></script>
     
 </body>
+
