@@ -6,7 +6,7 @@
     text-align: center;
     padding: 16px 24px;
     border-radius: 8px;
-    background: #3e1f78;
+    background: #114b5f;
     color: white;
 }
 .navBar ul {
@@ -29,12 +29,24 @@ nav a:focus {
     color: #ddd;
     text-decoration: none;
 }
+nav a:hover, button:hover {
+    border-color: #6366f1;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(225, 226, 243, 0.3);
+}
 
 .container { /*main layout*/
     max-width: 1200px;
     padding: 20px;
 }
-
+h2{
+    margin-bottom: 15px;
+    color: #3e1f78;
+    border: #333 1px solid;
+    border-radius: 50px;
+    padding: 10px 20px;
+    display: inline-block;
+}
 body {
     display: flex;
     flex-direction: column;
@@ -52,8 +64,16 @@ header {
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    background-color: #5a5466;
+    background-color: #456990;
     color: white;
+}
+/* alert list */
+#lowStockList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: 'Lucida Console', monospace;
+    align-items: center;
 }
 
 
@@ -61,10 +81,10 @@ header {
 .card, .alert-card, .quick-actions, .history-card, .action-card, .chart-section {
     background: white;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 12px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .alert-card {
     flex: 1 1 300px;
@@ -83,8 +103,9 @@ button, .backBtn {
     flex: 1;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
-    background-color: #5a5466;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    background-color: #456990;
     color: white;
     cursor: pointer;
     text-align: center;
@@ -93,8 +114,9 @@ button, .backBtn {
     display: inline-block;
 }
 button.btn-caution { /* For delete or critical actions */
-    background-color: #e74c3c;
+    background-color: #f45b69;
 } 
+
 
 /*forms & tables*/
 input, select {
@@ -105,6 +127,7 @@ input, select {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-family: inherit;
+    box-sizing: border-box;
 }
 table {
     width: 100%;
@@ -118,8 +141,9 @@ th, td {
     text-align: left;
 }
 th {
-    background-color: #3e1f78;
+    background-color: #574ae2;
     color: white;
+    padding: 15px;
 }
 .table-container, .active-inventory {
     overflow-x: auto;

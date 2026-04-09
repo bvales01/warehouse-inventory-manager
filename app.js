@@ -102,9 +102,9 @@ const updateInventory = (actionType) => {
     }
 
     // log transaction to history
-    logHistory(actionType === 'add' ? 'added' : 'removed', name, location, qty);
+    logHistory(actionType === 'add' ? 'Added' : 'Removed', name, location, qty);
     
-    alert(`Successfully ${actionType === 'add' ? 'added' : 'removed'} ${qty} of ${name} at ${location}.`);
+    alert(`Successfully ${actionType === 'add' ? 'Added' : 'Removed'} ${qty} of ${name} at ${location}.`);
 
     // successfully added or removed item, now clear input fields
     nameElement.value = '';
@@ -166,7 +166,7 @@ if (removeLocation) {
         }
 
         locations = locations.filter(loc => loc !== locationToRemove);
-        logHistory('Removed location', locationToRemove, '', '');
+        logHistory('Deleted location', locationToRemove, '', '');
         saveData();
         populateLocatations();
         alert(`Location "${locationToRemove}" deleted successfully.`);
