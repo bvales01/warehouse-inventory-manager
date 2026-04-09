@@ -1,6 +1,6 @@
 # InventoryPro 
 InventoryPro is a responsive website built to manage warehouse/store inventory.
-**Live Demo:** (https://bvales01.github.io/warehouse-inventory-manager/)
+Live Demo:https://bvales01.github.io/warehouse-inventory-manager/
 # Tech Stack
 - Frontend: HTML5, CSS3 (Flexbox/Grid), JavaScript(ES6+).
 - Libraries: Chart.js for data visualization
@@ -18,7 +18,6 @@ InventoryPro is made to track, manipulate, and visualize inventory data. Full CR
 3. Launch: For best experience with API fetching, right-click index.html and select "Open with Live Server".
 - **NO** API key is needed
 # How to Use 
-**Live Demo:** (https://bvales01.github.io/warehouse-inventory-manager/)
 The four pages are described below so you can easily and happily navigate InventoryPro! I have also included the API link, with some practice barcodes; feel free to lookup your favorite snack on (https://world.openfoodfacts.org/), copy its barcode and enter it into your inventory!
 1. **Dashboard:**
     - View "Low Stock Alert" card, representing critical (less than 5) and low (5-10) inventory stock. 
@@ -41,14 +40,8 @@ The four pages are described below so you can easily and happily navigate Invent
 5. Practice with some barcodes: 
     - 5449000054227 
     - 0028400040112 
-    - 0072030022093 
-    - 0074305701160 
-    - 0043695056310 
-    - 8436575298764
-    - 5017601050452 
-    - 7613036009102
-    - 0071100005509 
-    - 1220000450097
+    - 0051000153395
+    - 0021000053797
 # Development 
 This project was developed as a Capstone project for the Code: You program! 
 ## Author
