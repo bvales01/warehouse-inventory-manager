@@ -6,7 +6,7 @@
     text-align: center;
     padding: 16px 24px;
     border-radius: 8px;
-    background: #114b5f;
+    background: #272727;
     color: white;
 }
 .navBar ul {
@@ -29,10 +29,19 @@ nav a:focus {
     color: #ddd;
     text-decoration: none;
 }
-nav a:hover, button:hover {
+nav a:hover, button:hover , .backBtn:hover, button:focus, .backBtn:focus {
     border-color: #6366f1;
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(225, 226, 243, 0.3);
+}
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 8px 16px;
+    border-radius: 50px;
+    background-image: Radial-gradient(circle at 10% 20%, #4a90e2, #193e61);
 }
 
 .container { /*main layout*/
@@ -40,13 +49,9 @@ nav a:hover, button:hover {
     padding: 20px;
 }
 h2{
-    background: #a75769;
+    background: #5d8597;
     color: white;
-    border-left: 15px solid #6b2737;
-    border-right: 15px solid #6b2737;
-    border-top: 5px solid #6b2737;
-    border-bottom: 5px solid #6b2737;
-    border-radius: 90px;
+    border-radius: 100px;
     font-weight: 500;
     letter-spacing: 0.5px;
     text-align: center;
@@ -56,19 +61,19 @@ body {
     flex-direction: column;
     min-height: 100vh;
     font-family: 'Franklin Gothic Medium', sans-serif;
-    background: #e4fde1;
+    background: #c0c4c9;
     color: #333;
     line-height: 1.6;
 }
 header {
     font-size: 24px;
     margin-bottom: 20px;
-    padding: 30px;
+    padding: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    background-color: #456990;
+    background-color: #193e61;
     color: white;
 }
 /* alert list */
@@ -149,21 +154,23 @@ header {
 button, .backBtn {
     flex: 1;
     padding: 10px 20px;
-    border: 1px solid #2a445f;
-    border-radius: 50px;
     margin-bottom: 10px;
-    background-color: #456990;
-    background: linear-gradient(to bottom, #456990 0%, #345475 100%);
+    border-radius: 50px;
+    background-color: #193e61;
     color: white;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
     font-size: 16px;
     display: inline-block;
+    outline: none;
 }
 button.btn-caution { /* For delete or critical actions */
-    background-color: #f45b69;
+    background-image: linear-gradient(to bottom, #f53948, #f08c8d);
 } 
+#addBtn, #addLocationBtn, #lookupBtn {
+    background-image: linear-gradient(to bottom, #366291, #7a89be);
+}
 
 
 /*forms & tables*/
@@ -190,9 +197,11 @@ th, td {
     text-align: left;
 }
 th {
-    background-color: #456990;
+    background-color: #7abec9;
     color: white;
     padding: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 .table-container, .active-inventory {
     overflow-x: auto;

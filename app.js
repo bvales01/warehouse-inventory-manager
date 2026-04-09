@@ -2,7 +2,7 @@
 // FIRST: pull existing data from LocalStorage (Data Initialization)
 let inventory = JSON.parse(localStorage.getItem('inventoryData')) || [];
 let historyLog = JSON.parse(localStorage.getItem('historyData')) || [];
-let locations = JSON.parse(localStorage.getItem('locationsData')) || ['Aisle 1', 'Aisle 2', 'Aisle 3', 'Aisle 4'];
+let locations = JSON.parse(localStorage.getItem('locationsData')) || ['Aisle 1', 'Aisle 2', 'Aisle 3'];
 let inventoryChartInstance = null;
 
 // helper function to save inventory data to LocalStorage
@@ -77,6 +77,10 @@ const updateInventory = (actionType) => {
     const name = nameElement.value.trim();
     const location = locationElement.value.trim();
     const qty = parseInt(qtyElement.value, 10);
+    if (!name || !location || isNaN(qty) || qty <= 0) {
+        alert('Please enter valid item name, location, and quantity (greater than 0).');
+        return;
+    }
     const existingItemIndex = inventory.findIndex(item => item.name === name && item.location === location);
 
     if (actionType === 'add') {
@@ -195,7 +199,7 @@ const renderDashboard = () => {
     });
 
     const lowItems = Object.keys(totalInventoryByName)
-        .filter(name => totalInventoryByName[name].totalQty < 10)
+        .filter(name => totalInventoryByName[name].totalQty <= 10)
         .map(name => {
             return {
                 name: name,
@@ -208,7 +212,7 @@ const renderDashboard = () => {
 
     const legendHTML = `
         <div class="stock-legend">
-            <span class="legend-item"><span class="color-box danger"></span> Stock-Critical (&lt;5)</span>
+            <span class="legend-item"><span class="color-box danger"></span> Critical Stock (&lt;5)</span>
             <span class="legend-item"><span class="color-box warning"></span> Low Stock (5-10)</span>
         </div>
     `;
@@ -327,7 +331,7 @@ const attachFilterListeners = () => {
 
 
 
-// global page itialization
+// global page initialization
 document.addEventListener('DOMContentLoaded', () => {
     populateLocatations();
     renderDashboard();
