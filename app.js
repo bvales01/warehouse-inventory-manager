@@ -4,7 +4,6 @@ let inventory = JSON.parse(localStorage.getItem('inventoryData')) || [];
 let historyLog = JSON.parse(localStorage.getItem('historyData')) || [];
 let locations = JSON.parse(localStorage.getItem('locationsData')) || ['Aisle 1', 'Aisle 2', 'Aisle 3'];
 let inventoryChartInstance = null;
-
 // helper function to save inventory data to LocalStorage
 const saveData = () => {
     localStorage.setItem('inventoryData', JSON.stringify(inventory));
@@ -33,8 +32,7 @@ const populateLocatations = () => {
     });
 };
 
-   
-//API lookup script for inventory page
+//API lookup script for lookup function, with error handling and alerts
 const lookupItem = async () => {
     const barcodeInput = document.getElementById('barcodeInput');
     const itemNameInput = document.getElementById('itemName');
@@ -60,8 +58,6 @@ const lookupItem = async () => {
 // attach API lookup function to button
 const lookupBtn = document.getElementById('lookupBtn');
 if (lookupBtn) lookupBtn.addEventListener('click', lookupItem);
-
-
 
 // inventory management (add and remove items)
 const updateInventory = (actionType) => {
@@ -122,12 +118,11 @@ const updateInventory = (actionType) => {
     renderDashboard();
     populateLocatations();
 };
-
+// attach inventory management functions to buttons
 const addBtn = document.getElementById('addBtn');
 const removeBtn = document.getElementById('removeBtn');
 if (addBtn) addBtn.addEventListener('click', () => updateInventory('add'));
 if (removeBtn) removeBtn.addEventListener('click', () => updateInventory('remove'));
-
 
 // history logging function
 const logHistory = (action, name, location, qty) => {
@@ -155,6 +150,7 @@ if (addLocation) {
     });
 };
 
+// location delete function, with error handling and alerts
 const removeLocation = document.getElementById('deleteLocationBtn');
 if (removeLocation) {
     removeLocation.addEventListener('click', () => {
@@ -177,8 +173,7 @@ if (removeLocation) {
     });
 };
 
-
-// dashboard rendering  (alerts and charts)
+// dashboard rendering (alerts and charts)
 const renderDashboard = () => {
     const lowStockList = document.getElementById('lowStockList');
     if (!lowStockList) return;
@@ -240,7 +235,7 @@ const renderDashboard = () => {
         });
 
         if (inventoryChartInstance) inventoryChartInstance.destroy();
-
+        // AI was used for the new Chart.js code, but I customized the colors and labels to fit the inventory locations and theme of the app
         inventoryChartInstance = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -254,7 +249,6 @@ const renderDashboard = () => {
             options: { responsive: false }
         });
 };  
-
 
 // history page rendering
 const renderHistory = () => {
@@ -276,7 +270,6 @@ const renderHistory = () => {
         </tr>
     `).join('');
 };
-
 
 // inventory page filters and rendering
 const renderInventory = () => {
@@ -329,8 +322,6 @@ const attachFilterListeners = () => {
     });
 };
 
-
-
 // global page initialization
 document.addEventListener('DOMContentLoaded', () => {
     populateLocatations();
@@ -340,4 +331,3 @@ document.addEventListener('DOMContentLoaded', () => {
     attachFilterListeners();
 });
     
-

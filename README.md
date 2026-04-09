@@ -5,6 +5,7 @@ Live Demo: https://bvales01.github.io/warehouse-inventory-manager/
 - Frontend: HTML5, CSS3 (Flexbox/Grid), JavaScript(ES6+).
 - Libraries: Chart.js for data visualization
 - API: Open Food Facts API
+- AI usage: used to integrate visuals for chart.js in JavaScript lines 239-249(inventoryChartInstance = new Chart(ctx, {})), but I customized the colors and labels to fit the inventory locations and theme of the app
 # Description, Features & More
 InventoryPro is made to track, manipulate, and visualize inventory data. Full CRUD functionality: Users can easily add or remove items from inventory, create inventory locations, delete them, as well as view user history and live inventory. Here are some of the features I chose to include: 
 - **Data Persistence:** I chose LocalStorage as the persistence layer, because I knew data would persist even if the browser refreshed; also includes JSON.stringify to save my objects with JSON.parse to retrieve the data on page load.
