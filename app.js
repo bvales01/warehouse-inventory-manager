@@ -202,14 +202,30 @@ const renderDashboard = () => {
                 totalQty: totalInventoryByName[name].totalQty,
                 locations: totalInventoryByName[name].locations
             };
-        });
-        
-    lowStockList.innerHTML = lowItems.length === 0
-        ? '<li>No low stock items.</li>'
-        : lowItems.map(item => {
-            const color = item.totalQty < 5 ? 'red' : 'orange';
-            return `<li style="color: ${color};">${item.name} - Total Qty: ${item.totalQty} - Locations: ${item.locations.join(', ')}</li>`;
+        })
+        .sort((a, b) => 
+            a.totalQty - b.totalQty); // sort by quantity ascending
+
+    const legendHTML = `
+        <div class="stock-legend">
+            <span class="legend-item"><span class="color-box danger"></span> Stock-Critical (&lt;5)</span>
+            <span class="legend-item"><span class="color-box warning"></span> Low Stock (5-10)</span>
+        </div>
+    `;
+    if (lowItems.length === 0) {
+        lowStockList.innerHTML = '<div class="empty-state">No low stock items.</div>';
+    } else {
+        const lowStockHTML = lowItems.map(item => {
+            // assign class based on stock level (critical if <5, low if 4< a >10)
+            const status = item.totalQty < 5 ? 'stock-danger' : 'stock-warning';
+            return `
+                <div class="low-stock-item ${status.toLowerCase().replace(' ', '-')}">
+                    <strong>${item.name}</strong> ${item.totalQty} total (${item.locations.join(', ')})
+                </div>
+            `;
         }).join('');
+        lowStockList.innerHTML = legendHTML + lowStockHTML;
+    }
 
     const ctx = document.getElementById('inventoryChart');
     if (!ctx) return;
@@ -228,13 +244,12 @@ const renderDashboard = () => {
                 datasets: [{
                     label: 'Items per location',
                     data: Object.values(locationCounts),
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#C9CBCF', '#FF6384', '#36A2EB', '#FFCE56']
+                    backgroundColor: ['#2e5bff', '#aeea00', '#8e44ad', '#d81b60', '#27ae60', '#f39c12', '#C9CBCF', '#ff4081', '#36A2EB', '#3f51b5'],
                 }]
             },
             options: { responsive: false }
         });
-};
-
+};  
 
 
 // history page rendering

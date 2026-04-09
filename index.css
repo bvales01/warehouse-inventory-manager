@@ -40,19 +40,23 @@ nav a:hover, button:hover {
     padding: 20px;
 }
 h2{
-    margin-bottom: 15px;
-    color: #3e1f78;
-    border: #333 1px solid;
-    border-radius: 50px;
-    padding: 10px 20px;
-    display: inline-block;
+    background: #a75769;
+    color: white;
+    border-left: 15px solid #6b2737;
+    border-right: 15px solid #6b2737;
+    border-top: 5px solid #6b2737;
+    border-bottom: 5px solid #6b2737;
+    border-radius: 90px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-align: center;
 }
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     font-family: 'Franklin Gothic Medium', sans-serif;
-    background: #b8bec9;
+    background: #e4fde1;
     color: #333;
     line-height: 1.6;
 }
@@ -72,8 +76,51 @@ header {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    font-family: 'Lucida Console', monospace;
+    font-family: inherit;
     align-items: center;
+}
+.stock-legend {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: #495057;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.color-box {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}
+.color-box.danger {
+    background-color: #f45b69;
+}
+.color-box.warning {
+    background-color: #f9a03f;
+}
+.low-stock-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.stock-danger {
+    border-left-color: #ff4d4f;
+    background-color: #f45b69;
+}
+.stock-warning {
+    border-left-color: #faad14;
+    background-color: #f9a03f;
 }
 
 
@@ -102,10 +149,11 @@ header {
 button, .backBtn {
     flex: 1;
     padding: 10px 20px;
-    border: none;
+    border: 1px solid #2a445f;
     border-radius: 50px;
     margin-bottom: 10px;
     background-color: #456990;
+    background: linear-gradient(to bottom, #456990 0%, #345475 100%);
     color: white;
     cursor: pointer;
     text-align: center;
@@ -128,6 +176,7 @@ input, select {
     border-radius: 4px;
     font-family: inherit;
     box-sizing: border-box;
+    background-color: #ebe9e9;
 }
 table {
     width: 100%;
@@ -141,7 +190,7 @@ th, td {
     text-align: left;
 }
 th {
-    background-color: #574ae2;
+    background-color: #456990;
     color: white;
     padding: 15px;
 }
